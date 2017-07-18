@@ -1,0 +1,59 @@
+<html>
+<head>
+  <style>
+    canvas {
+      border: 1px solid black;
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="32" height="32" style=""></canvas>
+  <img id="img" />
+  <script>
+    const canvas = document.getElementById('canvas')
+    const img = document.getElementById('img')
+    const width = canvas.width
+    const height = canvas.height
+
+    let strength = 3
+    const maxStrength = 5
+    const strengthColours = []
+    const toHex = x => x < 16 ? '0' + x.toString(16) : x.toString(16)
+    for (let s = 0; s < maxStrength; s++) {
+      let g = Math.floor(0xdd * (s / (maxStrength-1)))
+      let r = Math.floor(0xff * (1 - (s / (maxStrength-1))))
+      let b =0xff - Math.abs(Math.floor(0x1fe * (s / (maxStrength -1))) - 0xff)
+      strengthColours.push('#' + toHex(r) + toHex(g) + toHex(b))
+    }
+
+    canvas.addEventListener('click', () => {
+      strength = (strength % maxStrength) + 1
+      render()
+    })
+    render ()
+
+    function render () {
+      const context = canvas.getContext('2d')
+
+
+      context.clearRect(0, 0, width, height)
+      context.fillStyle = 'black'
+
+      let barHSpace = (1 / maxStrength) * width * 0.5
+      let barWidth = (1 / maxStrength) * width * 0.8 * 0.5
+
+      for(let bar = 0; bar < maxStrength; bar ++) {
+        let center = ((1 / maxStrength) * bar * width) + barHSpace
+        let barHeight = ((bar + 1) / (maxStrength + 2)) * height
+
+        context.fillStyle = strength > bar ? strengthColours[strength-1] : 'white'
+        context.fillRect(center-barWidth,  (height * 0.9) - barHeight, barWidth * 2, barHeight )
+      }
+
+      var dataURL = canvas.toDataURL();
+      img.src = dataURL
+    }
+  </script>
+</body>
+</html>
