@@ -11,20 +11,22 @@ chrome.browserAction.onClicked.addListener(clicked);
 
 function clicked () {
   if (paused) {
+    paused = false
+    updateIcon(1)
     tick()
     setInterval(tick, 5000)
-    paused = false
     setTimeout(() => {
-      chrome.browserAction.setIcon({path: 'pause.png'});
+      chrome.browserAction.setIcon({path: 'pause.png'})
       paused = true
-    }, 1000 * 60)
+    }, 1000 * 60 * 30)
   } else {
-    chrome.browserAction.setIcon({path: 'pause.png'});
+    chrome.browserAction.setIcon({path: 'pause.png'})
     paused = true
   }
 }
 
 function tick() {
+  if (paused) return
   const start = new Date()
   let handled = false
   const timeoutHandle = setTimeout(() => {
@@ -52,6 +54,9 @@ function tick() {
         else strength = 1
         updateIcon(strength)
       }
+    })
+    .catch(err => {
+      updateIcon(1)
     })
 }
 

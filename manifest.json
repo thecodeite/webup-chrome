@@ -3,6 +3,12 @@
 
   "name": "Web status icon",
   "description": "This extension shows the current status of the internet",
+  "icons": {
+    "16": "logo_16.png",
+    "32": "logo_32.png",
+    "48": "logo_48.png",
+    "128": "logo_128.png"
+  },
   "version": "1.0",
   "background": {
     "scripts": ["background.js"]
